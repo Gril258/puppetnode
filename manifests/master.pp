@@ -5,14 +5,14 @@ class puppetnode::master(
 
   case $facts['operatingsystemmajrelease'] {
     '8': {
-      $puppet_package_version      = '1.10.1-1jessie',
+      $puppet_package_version      = '1.10.1-1jessie'
       $server_version              = '2.7.2-1puppetlabs1'
       $server_puppetserver_version = '2.7.2'
       $puppet_collections          = 'jessie'
       $release_package             = "puppetlabs-release-pc1-${puppet_collections}.deb"
     }
     '9': {
-      $puppet_package_version      = '6.2.0-1stretch',
+      $puppet_package_version      = '6.2.0-1stretch'
       $server_version              = '6.2.0-1stretch'
       $server_puppetserver_version = '6.2.0-1stretch'
       $puppet_collections          = 'stretch'
