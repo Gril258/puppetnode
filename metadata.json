@@ -1,6 +1,6 @@
 {
   "name": "Gril258-puppetnode",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "Gril258",
   "summary": "simple module for install puppet agent and server using another modules.",
   "license": "Apache-2.0",
