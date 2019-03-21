@@ -69,7 +69,6 @@ class puppetnode::master(
     server_puppetdb_host        => $::fqdn,
     server_reports              => 'puppetdb',
     server_storeconfigs_backend => 'puppetdb',
-    server_implementation       => 'puppetserver',
     version                     => $puppet_package_version,
     server_version              => $server_version,
     server_puppetserver_version => $server_puppetserver_version,
