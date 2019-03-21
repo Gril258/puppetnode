@@ -14,7 +14,7 @@ class puppetnode::master(
     '9': {
       $puppet_package_version      = '6.2.0-1stretch'
       $server_version              = '6.2.0-1stretch'
-      $server_puppetserver_version = '6.2.0-1stretch'
+      $server_puppetserver_version = '6.2.0'
       $puppet_collections          = 'stretch'
       $release_package             = "puppet-release-stretch.deb"
     }
