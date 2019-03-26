@@ -10,6 +10,7 @@ class puppetnode::master(
       $server_puppetserver_version = '2.7.2'
       $puppet_collections          = 'jessie'
       $release_package             = "puppetlabs-release-pc1-${puppet_collections}.deb"
+      $ruby_packages               = ['ruby', 'ruby-dev', 'build-essential']
     }
     '9': {
       $puppet_package_version      = '6.2.0-1stretch'
@@ -17,6 +18,7 @@ class puppetnode::master(
       $server_puppetserver_version = '6.2.0'
       $puppet_collections          = 'stretch'
       $release_package             = "puppet-release-stretch.deb"
+      $ruby_packages               = ['ruby', 'build-essential']
     }
     default: {
       # default - can be anything
@@ -29,9 +31,9 @@ class puppetnode::master(
   #install release package
 
   exec { 'install-collection':
-    command => "wget ${puppet_repo}${release_package};dpkg -i ${release_package}",
+    command => "wget ${puppet_repo}${release_package};dpkg -i /tmp/${release_package}",
     user    => 'root',
-    path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
+    path    => '/usr/bin:/usr/sbin:/bin:/usr/local/bin:/sbin:/usr/local/sbin',
     creates => '/tmp/${release_package}',
     cwd     => '/tmp/',
     require => Package['wget', 'ca-certificates']
@@ -107,7 +109,7 @@ class puppetnode::master(
   }
 
 
-  package { ['ruby', 'ruby-dev', 'build-essential']:
+  package { $ruby_packages:
     ensure => 'latest'
   }
 
