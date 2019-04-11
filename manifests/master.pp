@@ -116,7 +116,7 @@ class puppetnode::master(
   exec {'install librarian-puppet':
     command => '/usr/bin/gem install librarian-puppet',
     creates => '/usr/local/bin/librarian-puppet',
-    require => Package['ruby-dev'],
+    require => Package['ruby'],
   }
 
   cron { 'remove reports older than 14 days':
