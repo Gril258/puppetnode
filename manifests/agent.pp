@@ -1,22 +1,49 @@
 class puppetnode::agent(
   $server,
-  $runinterval = '14400'
+  $runinterval = '14400',
+  $puppet_package = undef,
+  $config_path = undef
 ) {
-  package { ['puppet-common', 'puppet']:
+
+  case $::operatingsystem {
+    'Debian': {
+      case $::operatingsystemmajrelease {
+        '9': {
+          $packages = ['puppet-common', 'puppet']
+          $config_file_path =  '/etc/puppet/puppet.conf'
+        }
+        default: {
+          $packages = ['puppet-common', 'puppet']
+          $config_file_path =  '/etc/puppet/puppet.conf'
+        }
+      }
+    }
+    'Centos':{
+      $packages = ['puppet-agent']
+      $config_file_path =  '/etc/puppetlabs/puppet/puppet.conf'
+    }
+    default: {
+      $packages = ['puppet-agent']
+    }
+  }
+
+  $puppet_confpath = pick($config_path, $config_file_path)
+  $puppet_package_toinstall = pick($puppet_package,  $packages)
+  package { $puppet_package_toinstall:
     ensure => 'latest'
   }
 
   file { '/etc/puppet/puppet.conf':
     ensure  => 'file',
     content => template("puppetnode/agent.erb"),
-    require => Package['puppet-common'],
+    require => Package[$puppet_package_toinstall],
     notify  => Service['puppet']
   }
 
   service { 'puppet':
     ensure  => 'running',
     enable  => true,
-    require => Package['puppet']
+    require => Package[$puppet_package_toinstall]
   }
   
   # it look like we dont need this
