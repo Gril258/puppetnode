@@ -2,7 +2,8 @@ class puppetnode::agent(
   $server,
   $runinterval = '14400',
   $puppet_package = undef,
-  $config_path = undef
+  $config_path = undef,
+  $ssl_dir = '/var/lib/puppet/ssl',
 ) {
 
   case $::operatingsystem {

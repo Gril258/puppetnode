@@ -14,7 +14,7 @@
 
     # Where SSL certificates are kept.
     # The default value is '$confdir/ssl'.
-    ssldir = /var/lib/puppet/ssl
+    ssldir = <%= @ssl_dir %>
 
     # Allow services in the 'puppet' group to access key (Foreman + proxy)
     privatekeydir = $ssldir/private_keys { group = service }
