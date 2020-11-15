@@ -41,6 +41,23 @@ class puppetnode::agent(
     notify  => Service['puppet']
   }
 
+  exec {
+    'puppetnode-systemctl-daemon-reload':
+      command     => 'systemctl daemon-reload',
+      refreshonly => true,
+  }
+
+  file { '/lib/systemd/system/puppet.service':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('puppetnode/systemd.service.erb'),
+    notify  => Exec['puppetnode-systemctl-daemon-reload'],
+    require => Package[$puppet_package_toinstall],
+  }
+
+
   service { 'puppet':
     ensure  => 'running',
     enable  => true,
