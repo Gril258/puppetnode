@@ -1,24 +1,27 @@
 class puppetnode::master(
   $server_jvm_max_heap_size = '4096m',
-  $server_jvm_min_heap_size = '2048m'
+  $server_jvm_min_heap_size = '2048m',
+  $puppet_package_version = undef,
+  $server_version = undef,
+  $server_puppetserver_version = undef
 ) {
 
   case $facts['operatingsystemmajrelease'] {
-    '8': {
-      $puppet_package_version      = '1.10.1-1jessie'
-      $server_version              = '2.7.2-1puppetlabs1'
-      $server_puppetserver_version = '2.7.2'
-      $puppet_collections          = 'jessie'
-      $release_package             = "puppetlabs-release-pc1-${puppet_collections}.deb"
-      $ruby_packages               = ['ruby', 'ruby-dev', 'build-essential']
-    }
     '9': {
-      $puppet_package_version      = '6.2.0-1stretch'
-      $server_version              = '6.2.0-1stretch'
-      $server_puppetserver_version = '6.2.0'
-      $puppet_collections          = 'stretch'
-      $release_package             = "puppet-release-stretch.deb"
-      $ruby_packages               = ['ruby', 'build-essential']
+      $puppet_package_version_to_use      = pick($puppet_package_version, '6.2.0-1stretch')
+      $server_version_to_use              = pick($server_version, '6.2.0-1stretch')
+      $server_puppetserver_version_to_use = pick($server_puppetserver_version, '6.2.0')
+      $puppet_collections                 = 'stretch'
+      $release_package                    = 'puppet-release-stretch.deb'
+      $ruby_packages                      = ['ruby', 'build-essential']
+    }
+    '10': {
+      $puppet_package_version_to_use      = pick($puppet_package_version, '6.2.0-1buster')
+      $server_version_to_use              = pick($server_version, '6.2.0-1buster')
+      $server_puppetserver_version_to_use = pick($server_puppetserver_version, '6.2.0')
+      $puppet_collections                 = 'buster'
+      $release_package                    = 'puppet-release-buster.deb'
+      $ruby_packages                      = ['ruby', 'build-essential']
     }
     default: {
       # default - can be anything
@@ -71,9 +74,9 @@ class puppetnode::master(
     server_puppetdb_host        => $::fqdn,
     server_reports              => 'puppetdb',
     server_storeconfigs_backend => 'puppetdb',
-    version                     => $puppet_package_version,
-    server_version              => $server_version,
-    server_puppetserver_version => $server_puppetserver_version,
+    version                     => $puppet_package_version_to_use,
+    server_version              => $server_version_to_use,
+    server_puppetserver_version => $server_puppetserver_version_to_use,
     server_jvm_min_heap_size    => $server_jvm_min_heap_size,
     server_jvm_max_heap_size    => $server_jvm_max_heap_size,
     server_jvm_extra_args       => '-Dfile.encoding=UTF-8',
