@@ -13,6 +13,10 @@ class puppetnode::agent(
           $packages = ['puppet-common', 'puppet']
           $config_file_path =  '/etc/puppet/puppet.conf'
         }
+        '11': {
+          $packages = ['puppet']
+          $config_file_path =  '/etc/puppet/puppet.conf'
+        }
         default: {
           $packages = ['puppet-common', 'puppet']
           $config_file_path =  '/etc/puppet/puppet.conf'
