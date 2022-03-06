@@ -38,11 +38,21 @@ class puppetnode::agent(
     ensure => 'latest'
   }
 
-  file { '/etc/puppet/puppet.conf':
-    ensure  => 'file',
-    content => template("puppetnode/agent.erb"),
-    require => Package[$puppet_package_toinstall],
-    notify  => Service['puppet']
+  if $clientversion > '7' {
+    file { '/etc/puppetlabs/puppet/puppet.conf':
+      ensure  => 'file',
+      content => template("puppetnode/agent7.erb"),
+      require => Package[$puppet_package_toinstall],
+      notify  => Service['puppet']
+    }
+  }
+  else {
+    file { '/etc/puppet/puppet.conf':
+      ensure  => 'file',
+      content => template("puppetnode/agent.erb"),
+      require => Package[$puppet_package_toinstall],
+      notify  => Service['puppet']
+    }
   }
 
   exec {
@@ -67,7 +77,7 @@ class puppetnode::agent(
     enable  => true,
     require => Package[$puppet_package_toinstall]
   }
-  
+
   # it look like we dont need this
   #apt::key { 'puppetlabs':
   #  id      => '7F438280EF8D349F',
