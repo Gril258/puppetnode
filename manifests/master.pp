@@ -3,7 +3,10 @@ class puppetnode::master(
   $server_jvm_min_heap_size = '2048m',
   $puppet_package_version = undef,
   $server_version = undef,
-  $server_puppetserver_version = undef
+  $server_puppetserver_version = undef,
+  $node_ttl          = '7d',
+  $node_purge_ttl    = '14d',
+  $report_ttl        = '14d',
 ) {
 
   case $facts['operatingsystemmajrelease'] {
@@ -96,6 +99,9 @@ class puppetnode::master(
   class { 'puppetdb':
     database_validate => false,
     require           => Class['::puppet', 'postgresql::globals'],
+    node_ttl          => $node_ttl,
+    node_purge_ttl    => $node_purge_ttl',
+    report_ttl        => $report_ttl,
   }
 
   file { '/etc/puppet/files':
