@@ -6,7 +6,7 @@ class puppetnode::master(
   $server_puppetserver_version = undef,
   $node_ttl          = '7d',
   $node_purge_ttl    = '14d',
-  $report_ttl        = '14d',
+  $report_ttl        = '14d'
 ) {
 
   case $facts['operatingsystemmajrelease'] {
@@ -100,7 +100,7 @@ class puppetnode::master(
     database_validate => false,
     require           => Class['::puppet', 'postgresql::globals'],
     node_ttl          => $node_ttl,
-    node_purge_ttl    => $node_purge_ttl',
+    node_purge_ttl    => $node_purge_ttl,
     report_ttl        => $report_ttl,
   }
 
